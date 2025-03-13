@@ -1,0 +1,27 @@
+CREATE DATABASE recrutamento_rh;
+USE recrutamento_rh;
+
+CREATE TABLE vagas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255),
+    descricao VARCHAR(400),
+    responsavel VARCHAR(255),
+    requisitos VARCHAR(255),
+    tipo_contrato VARCHAR(50),
+    salario DECIMAL(10,2),
+    status VARCHAR(50) DEFAULT 'Aberta'
+);
+
+CREATE TABLE candidaturas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    vaga_id INT NOT NULL,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    telefone VARCHAR(20),
+    experiencia TEXT,
+    habilidades TEXT,
+    FOREIGN KEY (vaga_id) REFERENCES vagas(id)
+);
+
+select * from vagas;
+select * from candidaturas;
