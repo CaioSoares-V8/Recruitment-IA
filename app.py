@@ -106,8 +106,11 @@ if menu == "RH":
             st.write(f"🙍‍♂️ Responsável: {vaga['responsavel']}")
             st.write(f"📃 Tipo de Contrato: {vaga['tipo_contrato']}")
             st.write(f"💰 Salário: R$ {vaga['salario']:.2f}" if vaga['salario'] else "💰 Salário: A combinar")
+            if st.button(f"🗑️ Excluir Vaga"):
+                st.info('Funcionalidade em desenvolvimento...')
+            st.markdown("---")
 
-            st.write("#### 📄 Candidaturas:")
+            st.write("#### 📄 Candidato:")
             candidaturas = listar_candidaturas_por_vaga(vaga['id'])
             if candidaturas:
                 for candidato in candidaturas:
@@ -119,25 +122,25 @@ if menu == "RH":
 
 
                     if vaga["status"] != "Fechada":
-                        if st.button(f"🤖 Gerar Aderência com IA", key=f"aderencia_{vaga['id']}_{candidato['nome']}"):
-                            st.info("Funcionalidade de IA em desenvolvimento...")
+                        if st.button(f"🤖 Gerar Aderência com IA"):
+                            st.info("Funcionalidade em desenvolvimento...")
+
+                        if st.button(f"❌ Recusar {candidato['nome']}"):
+                            st.info("Funcionalidade em desenvolvimento...")
 
                         if st.button(f"✅ Contratar {candidato['nome']}", key=f"contratar_{vaga['id']}_{candidato['nome']}"):
                             contratar_candidato(vaga['id'])
                             st.success(f"{candidato['nome']} foi contratado com sucesso!")
 
-                    st.markdown("---")
+                    
             else:
                 st.write("Nenhum candidato para esta vaga.")
-
-
-
 
 
     st.subheader("🤖 Chat com IA")
     user_input = st.text_input("Digite sua pergunta para a IA:")
     if user_input:
-        st.write("Resposta da IA")
+        st.info("Resposta da IA")
 
 elif menu == "Usuário":
     st.title("📌 Visualização de Vagas - Usuário")
@@ -166,6 +169,6 @@ elif menu == "Usuário":
     st.subheader("🤖 Chat com IA")
     user_input = st.text_input("Digite sua pergunta para a IA:")
     if user_input:
-        st.write("Resposta da IA")
+        st.info("Resposta da IA")
             
 
