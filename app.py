@@ -170,5 +170,3 @@ elif menu == "Usuário":
     user_input = st.text_input("Digite sua pergunta para a IA:")
     if user_input:
         st.info("Resposta da IA")
-            
-
