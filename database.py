@@ -7,14 +7,12 @@ load_dotenv()
 
 class BancoDeDados:
     def __init__(self):
-        """Inicializa a conexão com o banco de dados MySQL"""
         self.host = os.getenv("DB_HOST")
         self.database = os.getenv("DB_NAME")
         self.user = os.getenv("DB_USER")
         self.password = os.getenv("DB_PASSWORD")
 
     def conectar(self):
-        """Cria uma conexão com o banco de dados MySQL."""
         try:
             conexao = mysql.connector.connect(
                 host=self.host,
@@ -29,7 +27,6 @@ class BancoDeDados:
             return None
 
     def listar_vagas(self):
-        """Retorna todas as vagas do banco de dados."""
         conexao = self.conectar()
         if not conexao:
             return []
@@ -48,7 +45,6 @@ class BancoDeDados:
                 conexao.close()
 
     def listar_candidaturas_por_vaga(self, vaga_id):
-        """Retorna os candidatos de uma vaga específica."""
         conexao = self.conectar()
         if not conexao:
             return []
@@ -90,7 +86,6 @@ class BancoDeDados:
                 conexao.close()
 
     def criar_candidatura(self, vaga_id, nome, email, telefone, experiencia, habilidades):
-        """Cria uma nova candidatura para uma vaga."""
         conexao = self.conectar()
         if not conexao:
             return False
@@ -112,7 +107,6 @@ class BancoDeDados:
                 conexao.close()
 
     def excluir_vaga(self, vaga_id):
-        """Exclui uma vaga do banco de dados."""
         conexao = self.conectar()
         if not conexao:
             return False
@@ -131,22 +125,61 @@ class BancoDeDados:
                 cursor.close()
                 conexao.close()
 
-    def contratar_candidato(self, vaga_id):
-        """Atualiza o status da vaga para 'Fechada' após a contratação de um candidato."""
+    def atualizar_status_vaga(self, vaga_id, novo_status):
         conexao = self.conectar()
         if not conexao:
             return False
 
         try:
             cursor = conexao.cursor()
-            query = "UPDATE vagas SET status = 'Fechada' WHERE id = %s"
-            cursor.execute(query, (vaga_id,))
+            query = "UPDATE vagas SET status = %s WHERE id = %s"
+            cursor.execute(query, (novo_status, vaga_id))
             conexao.commit()
             return True
         except Error as e:
-            print(f"Erro ao contratar candidato: {e}")
+            print(f"Erro ao atualizar status da vaga: {e}")
             return False
         finally:
             if conexao.is_connected():
                 cursor.close()
                 conexao.close()
+
+
+    def atualizar_aderencia(self, candidatura_id, aderencia):
+        conexao = self.conectar()
+        if not conexao:
+            return False
+
+        try:
+            cursor = conexao.cursor()
+            query = "UPDATE candidaturas SET aderencia = %s WHERE id = %s"
+            cursor.execute(query, (aderencia, candidatura_id))
+            conexao.commit()
+            return True
+        except Error as e:
+            print(f"Erro ao atualizar aderência: {e}")
+            return False
+        finally:
+            if conexao.is_connected():
+                cursor.close()
+                conexao.close()
+
+    def recusar_candidato(self, candidato_id):
+        conexao = self.conectar()
+        if not conexao:
+            return False
+
+        try:
+            cursor = conexao.cursor()
+            query = "DELETE FROM candidaturas WHERE id = %s"
+            cursor.execute(query, (candidato_id,))
+            conexao.commit()
+            return True
+        except Error as e:
+            print(f"Erro ao recusar candidato: {e}")
+            return False
+        finally:
+            if conexao.is_connected():
+                cursor.close()
+                conexao.close()
+

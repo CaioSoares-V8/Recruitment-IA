@@ -18,10 +18,19 @@ CREATE TABLE candidaturas (
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     telefone VARCHAR(20),
-    experiencia TEXT,
-    habilidades TEXT,
+    experiencia VARCHAR(255),
+    habilidades VARCHAR(255),
+    aderencia INT,
     FOREIGN KEY (vaga_id) REFERENCES vagas(id)
 );
 
 select * from vagas;
 select * from candidaturas;
+
+
+INSERT INTO vagas (titulo, descricao, responsavel, requisitos, tipo_contrato, salario, status) VALUES
+('Desenvolvedor Backend', 'Desenvolvimento de APIs e microsserviços em Python.', 'Ana Paula', 'Python, Django, PostgreSQL, Docker', 'CLT', 8000.00, 'Aberta'),
+('Desenvolvedor Frontend', 'Desenvolvimento de interfaces web responsivas.', 'Ana Paula', 'React, JavaScript, CSS, Tailwind', 'PJ', 7500.00, 'Aberta'),
+('Analista de Dados', 'Análise de dados para gerar insights estratégicos.', 'Ana Paula', 'SQL, Power BI, Python, ETL', 'CLT', 9000.00, 'Aberta'),
+('Gerente de Projetos', 'Gestão de times ágeis e acompanhamento de entregas.', 'Ana Paula', 'Scrum, Kanban, Gestão de Riscos', 'CLT', 12000.00, 'Aberta'),
+('Estagiário de TI', 'Suporte à equipe de desenvolvimento e infraestrutura.', 'Ana Paula', 'Conhecimentos básicos em programação e redes', 'Estágio', 1800.00, 'Aberta');
