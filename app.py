@@ -81,7 +81,22 @@ if menu == "RH":
                                 }
                                 
                                 resultado_aderencia = chatbot.calcular_aderencia_ia(candidato_info, vaga_info)
-                                st.info(f"Aderência do Candidato: {resultado_aderencia}")
+    
+                                resultado_aderencia = resultado_aderencia.replace("%", "").strip()
+
+                                try:
+                                    resultado_aderencia = int(resultado_aderencia)
+                                except ValueError:
+                                    st.error("Erro ao converter aderência. Definindo como 0.")
+                                    resultado_aderencia = 0
+
+                                sucesso = db.atualizar_aderencia(candidato["id"], resultado_aderencia)
+
+                                if sucesso:
+                                    st.success(f"Aderência do Candidato: {resultado_aderencia}%")
+                                else:
+                                    st.error("Erro ao calcular a aderencia.")
+
 
                         with col2:
                             if st.button(f"❌ Recusar {candidato['nome']}", key=f"recusar_{index}_{cand_index}"):

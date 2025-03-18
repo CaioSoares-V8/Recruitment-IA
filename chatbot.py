@@ -13,7 +13,13 @@ class ChatBotIA:
 
     def obter_dados_do_banco(self):
         vagas = self.db.listar_vagas()
-        contexto_vagas = "\n".join([f"ID: {v['id']} | Título: {v['titulo']} | Status: {v['status']}" for v in vagas])
+        contexto_vagas = "\n".join([
+            (f"ID: {v['id']} | Título: {v['titulo']} | Status: {v['status']} | "
+            f"Descrição: {v['descricao']} | Responsável: {v['responsavel']} | "
+            f"Requisitos: {v['requisitos']} | Tipo de Contrato: {v['tipo_contrato']} | "
+            f"Salário: R${v['salario']:.2f}")
+            for v in vagas
+        ])
 
         contexto_candidaturas = ""
         for vaga in vagas:
@@ -22,22 +28,26 @@ class ChatBotIA:
                 contexto_candidaturas += (
                     f"\nVaga ID: {vaga['id']} - {vaga['titulo']}\n"
                     f"Nome: {c['nome']}, Email: {c['email']}, Telefone: {c['telefone']}, "
-                    f"Experiência: {c['experiencia']}, Habilidades: {c['habilidades']}\n"
+                    f"Experiência: {c['experiencia']}, Habilidades: {c['habilidades']}, "
+                    f"Aderência: {c['aderencia']}%\n"
                 )
 
         contexto = f"Vagas disponíveis:\n{contexto_vagas}\n\nCandidaturas:\n{contexto_candidaturas}"
         return contexto
+
 
     def perguntar(self, pergunta):
         """Gera uma resposta considerando os dados do banco como contexto."""
         contexto_dados = self.obter_dados_do_banco()
 
         contexto_ia = (
-            "Você é um assistente virtual especializado em recrutamento e gestão de RH. "
+            "Somos da empresa V8.Tech"
+            "Você é um assistente especialista que tem como objetivo auxiliar o RH no recrutamento. "
             "Seu objetivo é fornecer informações sobre vagas abertas, candidatos e ajudar no processo seletivo sempre direcionado a ajudar o recrutador. "
             "Use as informações do banco de dados para responder de maneira precisa.\n\n"
             f"{contexto_dados}\n\n"
             "Responda sempre em portugues do Brasil."
+            "Quando não tiver a informação de Aderencia disponivel, peça para que o recrutador calcule a aderencia utilizando a ferramenta disponivel na vaga."
             "Agora, responda à seguinte pergunta considerando essas informações:"
         )
 
